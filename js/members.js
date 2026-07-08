@@ -32,7 +32,11 @@ const MEMBERS = [
     illust: "member_riko.jpg",
     memberColor: "#4ade80", // 緑色
     emoji: "🐱",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/riko_alps",
+      instagram: "https://www.instagram.com/riko_alphaplus/",
+      tiktok: "https://www.tiktok.com/@riko_alphaplus",
+    },
   },
 
   /* ── 五十音順 ── */
@@ -51,14 +55,18 @@ const MEMBERS = [
       "アドリブのトーク、バンジージャンプ、つなわたり、洋楽早覚え、知らない人に声をかけること、動物に好かれること、部屋をちらかすこと、忘れ物をしてたられること",
     bestSong: "えりあし / aikoさん",
     ifLeader:
-      "メンバーの相談に乗ることが99いので、れもに相談所を作ります♡ Love & peace.",
+      "メンバーの相談に乗ることが多いので、れもに相談所を作ります♡ Love & peace.",
     message:
-      "Tack för att ni kom hit idag. Att få träffa er gör mitt liv underbart. Jag älskar er mest av allt i hela världen.",
+      "Tack for att ni kom hit idag. Att få träffa er gör mitt liv underbart. Jag älskar er mest av allt i hela världen.",
     isLeader: false,
     memberColor: "#fde047", // 黄色
     illust: "member_remon.jpg",
     emoji: "🍋",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/remoni_alps",
+      instagram: "https://www.instagram.com/remoni_alphaplus/",
+      tiktok: "https://www.tiktok.com/@remoni_alphaplus",
+    },
   },
   {
     id: 3,
@@ -79,7 +87,11 @@ const MEMBERS = [
     memberColor: "#f1f5f9", // 白色
     illust: "member_kokona.jpg",
     emoji: "🌸",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/kokona_alps",
+      instagram: "https://www.instagram.com/kokona_alphaplus/",
+      tiktok: "https://www.tiktok.com/@kokona_alphaplus",
+    },
   },
   {
     id: 4,
@@ -94,14 +106,18 @@ const MEMBERS = [
     skill: "ダンス（K-POP系）、ヘアアレンジ",
     bestSong: "Girls2さんの曲",
     ifLeader:
-      "皆がかわいいのレッスンバッグを買って、メンカラのストラップを付ける（強制）",
+      "皆でおそろいのレッスンバッグを買って、メンカラのストラップを付ける（強制）",
     message:
       "わちゃわちゃしてる日も、真剣な日も、全部ひっくるめて家族みたいなα+をこれからも見守ってください！！",
     isLeader: false,
     memberColor: "#d8b4fe", // 薄紫色
     illust: "member_megumi.jpg",
     emoji: "📷",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/megumi0404_alps",
+      instagram: "https://www.instagram.com/megumi_alphaplus/",
+      tiktok: "https://www.tiktok.com/@megumi_alphaplus",
+    },
   },
   {
     id: 5,
@@ -122,7 +138,11 @@ const MEMBERS = [
     memberColor: "#fbcfe8", // ベビーピンク
     illust: "member_yutsuki.jpg",
     emoji: "💜",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/yutsuki_alps",
+      instagram: "https://www.instagram.com/yutsuki_alphaplus/",
+      tiktok: "https://www.tiktok.com/@yutsuki_alphaplus",
+    },
   },
   {
     id: 6,
@@ -134,18 +154,22 @@ const MEMBERS = [
     blood: "B型",
     mbti: "ESFP-A",
     hobby:
-      "歌うこと、表現すること！おどること！ごアイドルぴたり♡、ペットのモーニー🐱とルーシー🐶とたわむれること♡",
+      "歌うこと、表現すること！おどること！ごアイドルぴたり♡、ペットのまーにー🐶とルーシー🦜とたわむれること♡",
     skill:
       "ドラム！叩けます！出来ます！7年間のチアダンスで得た、人を笑顔にするパフォーマンス♡",
     bestSong: "私、アイドル宣言 / monaちゃんTTO♡",
     ifLeader: "怒るときにバーン！擬音語ばかりで伝わらない。バーン！",
     message:
-      "まほを推して後悔させない！🩷まっこんにどっこんして〜♡♡♡ 赤色最強天才沼系甘々熱血アイドル推しに♡",
+      "まほを推して後悔させない！🩷まっこんにぞっこんして〜♡♡♡ 赤色最強天才沼系甘々熱血アイドル推して♡",
     isLeader: false,
     memberColor: "#f87171", // 赤色
     illust: "member_mahoko.jpg",
     emoji: "❤️",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/mahoko_alps",
+      instagram: "https://www.instagram.com/mahoko_alphaplus/",
+      tiktok: "https://www.tiktok.com/@mahoko_alphaplus",
+    },
   },
   {
     id: 7,
@@ -159,13 +183,17 @@ const MEMBERS = [
     hobby: "どくがくで音楽、温泉巡り、旅行",
     skill: "うたをうたうこと、声まね（しんちゃん・スティッチ）",
     bestSong: "安室奈美恵さんの曲！",
-    ifLeader: "空間をゆるふわに！みんなかわい〜",
+    ifLeader: "空間をつくる！みんな幸せに",
     message: "水色担当のたかはし みうです♡ みんなを笑顔にするね🩵。",
     isLeader: false,
     memberColor: "#7dd3fc", // 水色
     illust: "member_miu.jpg",
     emoji: "🩵",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/miu_alps",
+      instagram: "https://www.instagram.com/miu_alphaplus/",
+      tiktok: "https://www.tiktok.com/@miu_alphaplus",
+    },
   },
   {
     id: 8,
@@ -179,17 +207,21 @@ const MEMBERS = [
     hobby:
       "ディズニーシーに行く！サウナ・岩盤浴・推しを拝む、YouTube（フーさんとゆっぴさん、さくらちゃん）",
     skill:
-      "ストリートダンス！振り付け！好きになったらずっと好きでいられる！推しカメめっちゃ上手だよ（笑）",
+      "ストリートダンス！振り付け！好きになったらずっと好きでいられる！推しカメめっちゃ上手だよ？（笑）",
     bestSong: "Pixel Ribbonさん「アイセルピクセル」「花束アンコール」",
     ifLeader:
-      "話すスピードを5倍速に教育して、全員関西弁に染めてやる〜！加はメンケア1日1時間もらいます（絶対ね？）",
+      "話すスピードを5倍速に教育して、全員関西弁に染めてやる〜！あとはメンケア1日1時間もうけます←絶対ね？",
     message:
       "あるぷすちゃんを大好きでいてくれて、ありがとう♡ 一緒にいろんな景色を見に行こうね！ずっとそばにいてみんなの元気の源でいられますように。だいしゅき😍",
     isLeader: false,
     memberColor: "#60a5fa", // 青色
     illust: "member_yuyuno.jpg",
     emoji: "🌙",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/yuyuno_alps",
+      instagram: "https://www.instagram.com/yuyuno_alphaplus/",
+      tiktok: "https://www.tiktok.com/@yuyuno_alphaplus",
+    },
   },
   {
     id: 9,
@@ -205,12 +237,16 @@ const MEMBERS = [
       "プリクラの落書き、おしゃべり！（声でかい）、これから特技になる予定★ ギター",
     bestSong: "僕のヒロイン",
     ifLeader: "メンバーにマカロンを1コ300円で売りつける！",
-    message: "ニコニコな笑顔で元気を届けるよ〜！♡ みんなの太陽になる！！！☀️",
+    message: "ニカニカな笑顔で元気を届けるよ〜！♡ みんなの太陽になる！！！☀️",
     isLeader: false,
     memberColor: "#fb923c", // オレンジ
     illust: "member_hinano.jpg",
     emoji: "☀️",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/hinano_alps",
+      instagram: "https://www.instagram.com/hinano_alphaplus/",
+      tiktok: "https://www.tiktok.com/@hinano_alphaplus",
+    },
   },
   {
     id: 10,
@@ -221,18 +257,22 @@ const MEMBERS = [
     height: "149cm",
     blood: "A型",
     mbti: "ESFJ",
-    hobby: "サーティワンの新作をチェック、デジカメで景色をとる、コスメ集め",
-    skill: "ダンス、お絵描き、細かい作業、セルフネイルエ作",
+    hobby: "サーティワンの新作をチェック、デジカメで写真をとる、コスメ集め",
+    skill: "ダンス、お絵描き、器用な作業、セルフネイルエ作",
     bestSong: "back numberさん「わたがし」",
     ifLeader:
-      "メンバーみんなが見合い、それぞれが成長できる温かいグループをつくれるリーダーになりたい！！★",
+      "メンバーみんなが支え合い、それぞれが成長できる温かいグループをつくれるリーダーになりたい！！",
     message:
-      "いつも応援してくれてありがとね。みんなのことがだいすきだよ♡ これからも一緒に色んな景色みにいくね🌸",
+      "いつも応援してくれてありがとう✨ みんなのことがだいすきだよ♡ これからも一緒に色んな景色みにいこうね🌸",
     isLeader: false,
     memberColor: "#a3e635", // 黄緑
     illust: "member_himari.jpg",
     emoji: "🌼",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/himari_alps",
+      instagram: "https://www.instagram.com/himari_alphaplus/",
+      tiktok: "https://www.tiktok.com/@himari_alphaplus",
+    },
   },
   {
     id: 11,
@@ -248,12 +288,16 @@ const MEMBERS = [
     bestSong: "韓ドラOST",
     ifLeader: "毎日、パンを食べさせる😼",
     message:
-      "みんなにかわいいを届けて、だれかを救えるようにがんばります！みんな だいすきだよ〜！♡",
+      "みんなにかわいいを届けて、だれかを救えるようにがんばります！みんなだいすきだよ〜！♡",
     isLeader: false,
     memberColor: "#f472b6", // ピンク
     illust: "member_emiru.jpg",
     emoji: "🍞",
-    sns: { x: "", instagram: "", tiktok: "" },
+    sns: {
+      x: "https://x.com/emiru_alps",
+      instagram: "https://www.instagram.com/emiru_alphaplus/",
+      tiktok: "https://www.tiktok.com/@emiru_alphaplus",
+    },
   },
 ];
 
