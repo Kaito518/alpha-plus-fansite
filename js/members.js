@@ -319,8 +319,11 @@ function buildSnsButtons(sns) {
 function openMemberModal(m) {
   const bg = m.memberColor || "#fce7f3";
   document.getElementById("mAvatar").style.background = bg;
-  document.getElementById("mAvatar").innerHTML =
-    `<span style="font-size:36px">${m.emoji}</span>`;
+  document.getElementById("mAvatar").innerHTML = `
+  <img src="images/${m.illust}" alt="${m.name}のイラスト"
+    style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%"
+    onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\\'font-size:34px\\'>${m.emoji}</span>')">
+`;
   document.getElementById("mName").textContent = m.name;
   document.getElementById("mRuby").textContent = m.nameRuby;
   document.getElementById("mCatch").textContent = m.nickname;
