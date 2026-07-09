@@ -17,6 +17,8 @@
         <button class="active" onclick="showPage('top', this)">トップ</button>
         <button onclick="showPage('members', this)">メンバー</button>
         <button onclick="showPage('events', this)">イベント</button>
+        <button onclick="showPage('compare', this)">共通点</button>
+        <button onclick="showPage('fanboard', this)">ファン掲示板</button>
         <button onclick="showPage('about', this)">グループ</button>
       </div>
     </nav>
@@ -689,9 +691,134 @@
       </div>
     </div>
 
+    <!-- 共通点ページ -->
+    <div id="page-compare" class="page">
+      <div class="section">
+        <div class="sec-title">🔍 メンバー共通点を探す</div>
+        <div class="compare-filters">
+          <div class="compare-filter-group">
+            <div class="compare-filter-label">🧠 MBTI</div>
+            <div class="compare-filter-btns" id="filterMbti"></div>
+          </div>
+          <div class="compare-filter-group">
+            <div class="compare-filter-label">🩸 血液型</div>
+            <div class="compare-filter-btns" id="filterBlood"></div>
+          </div>
+          <div class="compare-filter-group">
+            <div class="compare-filter-label">📍 出身地</div>
+            <div class="compare-filter-btns" id="filterFrom"></div>
+          </div>
+          <div class="compare-filter-group">
+            <div class="compare-filter-label">📏 身長</div>
+            <div class="compare-filter-btns" id="filterHeight"></div>
+          </div>
+        </div>
+        <button class="compare-reset" onclick="resetCompare()">
+          ✕ フィルターをリセット
+        </button>
+        <div class="compare-result-label" id="compareResultLabel"></div>
+        <div class="compare-result-grid" id="compareResultGrid"></div>
+        <div class="sec-title" style="margin-top: 2rem">
+          ✦ グループ共通点まとめ
+        </div>
+        <div class="compare-summary-grid" id="compareSummaryGrid"></div>
+      </div>
+    </div>
+
+    <!-- ファン掲示板ページ -->
+    <div id="page-fanboard" class="page">
+      <div class="section">
+        <div class="sec-title">📹 ファン動画掲示板</div>
+        <p
+          style="
+            font-size: 13px;
+            color: var(--sub);
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--pink-l);
+          "
+        >
+          ライブで撮影した動画のYouTube・TikTok URLを投稿してシェアしよう♡<br />
+          <span style="font-size: 11px"
+            >※著作権や肖像権に配慮した投稿をお願いします。</span
+          >
+        </p>
+        <div class="fanboard-form">
+          <div class="fanboard-form-title">✏️ 動画を投稿する</div>
+          <input
+            type="text"
+            id="fbNickname"
+            placeholder="ニックネーム"
+            class="fanboard-input"
+          />
+          <input
+            type="url"
+            id="fbUrl"
+            placeholder="YouTube または TikTok の動画URL"
+            class="fanboard-input"
+          />
+          <input
+            type="text"
+            id="fbComment"
+            placeholder="コメント（例：○○のライブ！最高だった♡）"
+            class="fanboard-input"
+          />
+          <div class="fanboard-member-select">
+            <div style="font-size: 12px; color: var(--sub); margin-bottom: 6px">
+              関連メンバー（任意）
+            </div>
+            <div id="fbMemberTags" class="fanboard-tags"></div>
+          </div>
+          <button class="fanboard-submit" onclick="submitFanPost()">
+            投稿する ♡
+          </button>
+          <div
+            id="fbError"
+            style="
+              font-size: 12px;
+              color: #f87171;
+              margin-top: 6px;
+              display: none;
+            "
+          ></div>
+        </div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1.5rem 0 0.8rem;
+          "
+        >
+          <div class="sec-title" style="margin: 0">📋 みんなの投稿</div>
+          <div
+            id="fbPostCount"
+            style="font-size: 12px; color: var(--sub)"
+          ></div>
+        </div>
+        <div id="fanboardList" class="fanboard-list">
+          <div
+            style="
+              text-align: center;
+              padding: 2rem;
+              color: var(--sub);
+              font-size: 14px;
+            "
+          >
+            読み込み中...
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── JavaScript ── -->
     <script src="js/app.js"></script>
     <script src="js/members.js"></script>
     <script src="js/events.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/fanboard.js"></script>
   </body>
 </html>

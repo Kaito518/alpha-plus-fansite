@@ -1216,3 +1216,270 @@ nav {
   .news-banner-img { width: 100%; min-height: 180px; max-height: 220px; }
   .news-banner-body { padding: 12px; }
 }
+
+
+/* ========================================
+   共通点ページ
+   ======================================== */
+.compare-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 1rem;
+}
+.compare-filter-group { }
+.compare-filter-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sub);
+  margin-bottom: 6px;
+}
+.compare-filter-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.compare-filter-btn {
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  color: var(--sub);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  transition: all .2s;
+}
+.compare-filter-btn.active,
+.compare-filter-btn:hover {
+  background: var(--pink);
+  color: white;
+  border-color: var(--pink);
+}
+.compare-reset {
+  background: none;
+  border: 1px solid var(--pink-l);
+  color: var(--sub);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  margin-bottom: 1rem;
+}
+.compare-result-label {
+  font-size: 13px;
+  color: var(--sub);
+  margin-bottom: .8rem;
+  min-height: 1.4em;
+}
+.compare-result-count {
+  font-family: 'Kaisei Decol', serif;
+  font-size: 20px;
+  color: var(--pink);
+  margin-right: 4px;
+}
+.compare-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.compare-member-card {
+  background: white;
+  border: 2px solid var(--pink-l);
+  border-radius: 14px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.compare-member-card:hover { transform: translateY(-3px); }
+.compare-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin: 0 auto 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.compare-name  { font-size: 12px; font-weight: 700; color: var(--text); }
+.compare-ruby  { font-size: 10px; color: var(--sub); }
+
+/* 共通点まとめ */
+.compare-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.compare-summary-section {
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  border-radius: 16px;
+  padding: 14px;
+}
+.compare-summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pink);
+  margin-bottom: 10px;
+}
+.compare-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 0.5px solid var(--pink-ll);
+  font-size: 12px;
+}
+.compare-summary-row:last-child { border-bottom: none; }
+.compare-summary-key   { min-width: 72px; color: var(--sub); flex-shrink: 0; }
+.compare-summary-dots  { display: flex; gap: 3px; flex-shrink: 0; }
+.compare-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,.1);
+}
+.compare-summary-names { font-size: 11px; color: var(--text); line-height: 1.5; }
+
+/* ========================================
+   ファン掲示板
+   ======================================== */
+.fanboard-form {
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.fanboard-form-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--pink);
+  margin-bottom: 2px;
+}
+.fanboard-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--pink-l);
+  border-radius: 12px;
+  font-size: 13px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+  background: var(--pink-ll);
+}
+.fanboard-input:focus { border-color: var(--pink); background: white; }
+.fanboard-member-select { }
+.fanboard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.fanboard-member-tag {
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  color: var(--sub);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  transition: all .15s;
+}
+.fanboard-submit {
+  background: var(--pink);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  transition: opacity .2s;
+}
+.fanboard-submit:hover { opacity: .85; }
+.fanboard-submit:disabled { opacity: .5; cursor: default; }
+
+.fanboard-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.fanboard-card {
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.fanboard-card-media { position: relative; }
+.fanboard-thumb-link { display: block; position: relative; }
+.fanboard-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+.fanboard-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.25);
+  color: white;
+  font-size: 28px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.fanboard-thumb-link:hover .fanboard-play { opacity: 1; }
+.fanboard-url-link {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  font-size: 13px;
+  color: var(--pink);
+  font-weight: 700;
+  text-decoration: none;
+  background: var(--pink-ll);
+  gap: 6px;
+}
+.fanboard-card-body { padding: 12px; }
+.fanboard-card-comment { font-size: 13px; color: var(--text); margin-bottom: 8px; line-height: 1.6; }
+.fanboard-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--sub);
+  margin-bottom: 6px;
+}
+.fanboard-card-nick { color: var(--pink); font-weight: 700; }
+.fanboard-card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.fanboard-post-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.fanboard-setup-notice {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border: 1.5px solid var(--pink-l);
+  border-radius: 16px;
+  grid-column: 1/-1;
+}
+
+/* レスポンシブ */
+@media (max-width: 480px) {
+  .compare-summary-grid { grid-template-columns: 1fr; }
+  .fanboard-list { grid-template-columns: 1fr; }
+  .compare-result-grid { grid-template-columns: repeat(3, 1fr); }
+}
