@@ -17,6 +17,13 @@ const firebaseConfig = {
 };
 
 /* ================================================
+   EmailJS 設定
+   ================================================ */
+const EMAILJS_SERVICE_ID = "service_z7fno1s";
+const EMAILJS_TEMPLATE_ID = "template_cugwsaw";
+const EMAILJS_PUBLIC_KEY = "39IoDN5W9NAanvtHA";
+
+/* ================================================
    状態管理
    ================================================ */
 let db = null;
@@ -232,6 +239,18 @@ async function submitFanPost() {
       t.style.color = "";
     });
 
+    // EmailJS でメール通知
+    emailjs
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        nickname: nickname,
+        post_type: postType === "all" ? "全体撮影" : "メンバー個人",
+        member: postType === "member" ? selectedMember : "なし",
+        comment: comment,
+        url: url,
+        date: new Date().toLocaleString("ja-JP"),
+      })
+      .catch((e) => console.error("メール送信エラー:", e));
+
     btn.textContent = "投稿しました♡";
     setTimeout(() => {
       btn.textContent = "投稿する ♡";
@@ -413,6 +432,14 @@ function initMemberTagsStatic() {
    DOMContentLoaded
    ================================================ */
 document.addEventListener("DOMContentLoaded", () => {
+  // EmailJS読み込み
+  const ejsScript = document.createElement("script");
+  ejsScript.src =
+    "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+  ejsScript.onload = () => emailjs.init(EMAILJS_PUBLIC_KEY);
+  document.head.appendChild(ejsScript);
+
+  // 投稿タイプボタン
   document.querySelectorAll(".fb-type-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       postType = btn.dataset.type;
@@ -422,11 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.add("active");
       const ms = document.getElementById("fbMemberSection");
       if (ms) ms.style.display = postType === "member" ? "block" : "none";
-
-      // ← ここを追加：メンバー個人を選んだときにタグを初期化
-      if (postType === "member") {
-        initMemberTags();
-      }
+      if (postType === "member") initMemberTags();
     });
   });
 
