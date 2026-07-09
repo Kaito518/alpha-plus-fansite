@@ -137,7 +137,6 @@ nav {
   display: block;
   object-fit: contain;
   object-position: top center;
-  vertical-align: bottom;
 }
 .hero-overlay {
   position: absolute;
@@ -1709,8 +1708,6 @@ nav {
   gap: 14px;
   margin-bottom: 1rem;
 }
-.compare-filter-group {
-}
 .compare-filter-label {
   font-size: 12px;
   font-weight: 700;
@@ -1886,8 +1883,6 @@ nav {
 .fanboard-input:focus {
   border-color: var(--pink);
   background: white;
-}
-.fanboard-member-select {
 }
 .fanboard-tags {
   display: flex;
@@ -2094,4 +2089,18 @@ nav {
     flex: 1;
     text-align: center;
   }
+}
+
+/* スマホでスパークル非表示 */
+@media (max-width: 768px) {
+  .sparkle-wrap {
+    display: none;
+  }
+}
+
+/* 共通点結果テキスト折り返し修正 */
+.compare-result-grid p {
+  grid-column: 1 / -1;
+  word-break: keep-all;
+  white-space: normal;
 }
