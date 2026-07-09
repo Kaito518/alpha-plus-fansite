@@ -10,11 +10,11 @@
    メンバーデータ
    ※ memberColor: '' は未設定。カラーコード（例: '#f9a8d4'）を入れてください
    ================================================ */
-const MEMBERS = [
+window.MEMBERS = [
   /* ── リーダー ── */
   {
     id: 1,
-    name: "木野 菓子",
+    name: "木野 稟子",
     nameRuby: "きの りこ",
     nickname: "きのりこ、りこちゃむ 🐱",
     from: "京都府",
@@ -228,7 +228,7 @@ const MEMBERS = [
     name: "西野 日菜乃",
     nameRuby: "にしの ひなの",
     nickname: "ひなのん",
-    from: "大阪（なにわ）",
+    from: "大阪府",
     height: "150cm みーとる",
     blood: "おしえなーい！！（知らない）",
     mbti: "ENFP-T（げんき！！）",

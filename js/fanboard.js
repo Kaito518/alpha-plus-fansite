@@ -1,7 +1,6 @@
 /**
  * α+ 公式ファンサイト
  * fanboard.js — ファン動画掲示板（Firebase Firestore使用）
- *
  */
 
 /* ================================================
@@ -18,24 +17,31 @@ const firebaseConfig = {
 };
 
 /* ================================================
-   Firebase 初期化
+   状態管理
    ================================================ */
 let db = null;
 let fbConfigured = false;
+let postType = "all"; // 'all'（全体）| 'member'（個人）
+let selectedMember = null; // 個人選択時のメンバー名
+let filterMember = "すべて"; // 閲覧フィルター
+let unsubscribe = null; // Firestoreリスナー解除用
 
+/* ================================================
+   Firebase 初期化
+   ================================================ */
 function initFirebase() {
-  // 設定が未入力の場合はデモモードで動作
   if (firebaseConfig.apiKey === "YOUR_API_KEY") {
     renderFanboardDemo();
     return;
   }
-
   try {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
     fbConfigured = true;
-    loadFanPosts();
+    initPostTypeToggle();
     initMemberTags();
+    initViewFilter();
+    loadFanPosts();
   } catch (e) {
     console.error("Firebase初期化エラー:", e);
     renderFanboardDemo();
@@ -43,35 +49,118 @@ function initFirebase() {
 }
 
 /* ================================================
-   メンバータグ（投稿フォーム）
+   投稿タイプ切り替え（全体 / メンバー個人）
    ================================================ */
-let selectedMembers = [];
+function initPostTypeToggle() {
+  const btns = document.querySelectorAll(".fb-type-btn");
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      postType = btn.dataset.type;
+      btns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
 
+      const memberSection = document.getElementById("fbMemberSection");
+      if (postType === "member") {
+        memberSection.style.display = "block";
+      } else {
+        memberSection.style.display = "none";
+        selectedMember = null;
+        document.querySelectorAll(".fanboard-member-tag").forEach((t) => {
+          t.classList.remove("active");
+          t.style.background = "";
+          t.style.color = "";
+        });
+      }
+    });
+  });
+}
+
+/* ================================================
+   メンバータグ（投稿フォーム・1人だけ選択）
+   ================================================ */
 function initMemberTags() {
   const wrap = document.getElementById("fbMemberTags");
   if (!wrap || !window.MEMBERS) return;
   wrap.innerHTML = "";
   MEMBERS.forEach((m) => {
+    const lastName = m.name.split(" ")[1] || m.name;
     const tag = document.createElement("button");
     tag.className = "fanboard-member-tag";
     tag.style.borderColor = m.memberColor || "var(--pink-l)";
-    tag.textContent = m.name.split(" ")[1] || m.name;
+    tag.textContent = lastName;
+    tag.dataset.name = m.name;
     tag.addEventListener("click", () => {
-      const idx = selectedMembers.indexOf(m.name);
-      if (idx === -1) {
-        selectedMembers.push(m.name);
-        tag.classList.add("active");
-        tag.style.background = m.memberColor || "var(--pink)";
-        tag.style.color = "white";
-      } else {
-        selectedMembers.splice(idx, 1);
+      // 1人だけ選択
+      if (selectedMember === m.name) {
+        selectedMember = null;
         tag.classList.remove("active");
         tag.style.background = "";
         tag.style.color = "";
+      } else {
+        selectedMember = m.name;
+        document.querySelectorAll(".fanboard-member-tag").forEach((t) => {
+          t.classList.remove("active");
+          t.style.background = "";
+          t.style.color = "";
+        });
+        tag.classList.add("active");
+        tag.style.background = m.memberColor || "var(--pink)";
+        tag.style.color = "white";
       }
     });
     wrap.appendChild(tag);
   });
+}
+
+/* ================================================
+   閲覧フィルター（全体 / メンバー別）
+   ================================================ */
+function initViewFilter() {
+  const bar = document.getElementById("fbFilterBar");
+  if (!bar || !window.MEMBERS) return;
+  bar.innerHTML = "";
+
+  // 「すべて」ボタン
+  const allBtn = document.createElement("button");
+  allBtn.className = "fb-filter-btn active";
+  allBtn.textContent = "すべて";
+  allBtn.addEventListener("click", () => setViewFilter("すべて", allBtn));
+  bar.appendChild(allBtn);
+
+  // 「全体撮影」ボタン
+  const groupBtn = document.createElement("button");
+  groupBtn.className = "fb-filter-btn";
+  groupBtn.textContent = "🎬 全体";
+  groupBtn.addEventListener("click", () => setViewFilter("全体", groupBtn));
+  bar.appendChild(groupBtn);
+
+  // メンバーごとのボタン
+  MEMBERS.forEach((m) => {
+    const lastName = m.name.split(" ")[1] || m.name;
+    const btn = document.createElement("button");
+    btn.className = "fb-filter-btn";
+    btn.textContent = lastName;
+    btn.style.borderColor = m.memberColor || "var(--pink-l)";
+    btn.dataset.memberName = m.name;
+    btn.dataset.color = m.memberColor || "";
+    btn.addEventListener("click", () => setViewFilter(m.name, btn));
+    bar.appendChild(btn);
+  });
+}
+
+function setViewFilter(name, btn) {
+  filterMember = name;
+  document.querySelectorAll(".fb-filter-btn").forEach((b) => {
+    b.classList.remove("active");
+    b.style.background = "";
+    b.style.color = "";
+  });
+  btn.classList.add("active");
+  if (btn.dataset.color) {
+    btn.style.background = btn.dataset.color;
+    btn.style.color = "white";
+  }
+  renderFilteredPosts();
 }
 
 /* ================================================
@@ -82,7 +171,6 @@ async function submitFanPost() {
   const url = document.getElementById("fbUrl").value.trim();
   const comment = document.getElementById("fbComment").value.trim();
   const errEl = document.getElementById("fbError");
-
   errEl.style.display = "none";
 
   if (!nickname) {
@@ -101,11 +189,13 @@ async function submitFanPost() {
     showFbError("コメントを入力してください");
     return;
   }
+  if (postType === "member" && !selectedMember) {
+    showFbError("メンバーを1人選んでください");
+    return;
+  }
 
   if (!fbConfigured) {
-    showFbError(
-      "Firebase未設定のため投稿できません。js/fanboard.jsの設定をしてください。",
-    );
+    showFbError("Firebase未設定のため投稿できません。");
     return;
   }
 
@@ -118,18 +208,24 @@ async function submitFanPost() {
       nickname,
       url,
       comment,
-      members: selectedMembers,
+      postType, // 'all' or 'member'
+      member: postType === "member" ? selectedMember : null,
       platform: detectPlatform(url),
       embedUrl: getEmbedUrl(url),
       thumbnailUrl: getThumbnailUrl(url),
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
-    // リセット
+    // フォームリセット
     document.getElementById("fbNickname").value = "";
     document.getElementById("fbUrl").value = "";
     document.getElementById("fbComment").value = "";
-    selectedMembers = [];
+    selectedMember = null;
+    postType = "all";
+    document.querySelectorAll(".fb-type-btn").forEach((b, i) => {
+      b.classList.toggle("active", i === 0);
+    });
+    document.getElementById("fbMemberSection").style.display = "none";
     document.querySelectorAll(".fanboard-member-tag").forEach((t) => {
       t.classList.remove("active");
       t.style.background = "";
@@ -160,59 +256,68 @@ function showFbError(msg) {
 function isValidVideoUrl(url) {
   return /youtu\.?be|tiktok\.com/.test(url);
 }
-
 function detectPlatform(url) {
   if (/youtu\.?be/.test(url)) return "youtube";
   if (/tiktok\.com/.test(url)) return "tiktok";
   return "other";
 }
-
 function getVideoId(url) {
   const yt = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  if (yt) return yt[1];
-  return null;
+  return yt ? yt[1] : null;
 }
-
 function getEmbedUrl(url) {
   const id = getVideoId(url);
-  if (id) return `https://www.youtube.com/embed/${id}`;
-  return url;
+  return id ? `https://www.youtube.com/embed/${id}` : url;
 }
-
 function getThumbnailUrl(url) {
   const id = getVideoId(url);
-  if (id) return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
-  return null;
+  return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
 }
 
 /* ================================================
-   投稿一覧を読み込む（リアルタイム）
+   投稿一覧（全件取得してフロントでフィルタ）
    ================================================ */
+let allPosts = [];
+
 function loadFanPosts() {
   if (!db) return;
 
-  db.collection("fanposts")
+  if (unsubscribe) unsubscribe();
+
+  unsubscribe = db
+    .collection("fanposts")
     .orderBy("createdAt", "desc")
-    .limit(50)
+    .limit(100)
     .onSnapshot((snapshot) => {
-      const list = document.getElementById("fanboardList");
-      const countEl = document.getElementById("fbPostCount");
-      if (!list) return;
-
-      countEl.textContent = `${snapshot.size}件の投稿`;
-
-      if (snapshot.empty) {
-        list.innerHTML =
-          '<p style="text-align:center;color:var(--sub);font-size:14px;padding:2rem">まだ投稿がありません。最初の投稿をしてみよう♡</p>';
-        return;
-      }
-
-      list.innerHTML = "";
-      snapshot.forEach((doc) => {
-        const d = doc.data();
-        list.appendChild(buildPostCard(doc.id, d));
-      });
+      allPosts = [];
+      snapshot.forEach((doc) => allPosts.push({ id: doc.id, ...doc.data() }));
+      renderFilteredPosts();
     });
+}
+
+function renderFilteredPosts() {
+  const list = document.getElementById("fanboardList");
+  const countEl = document.getElementById("fbPostCount");
+  if (!list) return;
+
+  let filtered = allPosts;
+
+  if (filterMember === "全体") {
+    filtered = allPosts.filter((d) => d.postType === "all");
+  } else if (filterMember !== "すべて") {
+    filtered = allPosts.filter((d) => d.member === filterMember);
+  }
+
+  if (countEl) countEl.textContent = `${filtered.length}件`;
+
+  if (!filtered.length) {
+    list.innerHTML =
+      '<p style="text-align:center;color:var(--sub);font-size:14px;padding:2rem;grid-column:1/-1">まだ投稿がありません♡</p>';
+    return;
+  }
+
+  list.innerHTML = "";
+  filtered.forEach((d) => list.appendChild(buildPostCard(d.id, d)));
 }
 
 /* ================================================
@@ -225,16 +330,21 @@ function buildPostCard(id, d) {
   const date = d.createdAt
     ? new Date(d.createdAt.seconds * 1000).toLocaleDateString("ja-JP")
     : "";
-  const memberTags = (d.members || [])
-    .map((name) => {
-      const m = window.MEMBERS ? MEMBERS.find((mb) => mb.name === name) : null;
-      const color = m ? m.memberColor : "var(--pink)";
-      return `<span class="fanboard-post-tag" style="background:${color};color:white">${name.split(" ")[1] || name}</span>`;
-    })
-    .join("");
-
   const platform = d.platform || detectPlatform(d.url);
   const thumbnail = d.thumbnailUrl || getThumbnailUrl(d.url);
+
+  // タイプバッジ
+  let typeBadge = "";
+  if (d.postType === "member" && d.member) {
+    const m = window.MEMBERS
+      ? MEMBERS.find((mb) => mb.name === d.member)
+      : null;
+    const color = m ? m.memberColor : "var(--pink)";
+    const lastName = d.member.split(" ")[1] || d.member;
+    typeBadge = `<span class="fanboard-post-tag" style="background:${color};color:white">${lastName}</span>`;
+  } else {
+    typeBadge = `<span class="fanboard-post-tag" style="background:#e0f2fe;color:#0369a1">🎬 全体</span>`;
+  }
 
   const mediaHtml =
     platform === "youtube" && thumbnail
@@ -249,12 +359,12 @@ function buildPostCard(id, d) {
   card.innerHTML = `
     <div class="fanboard-card-media">${mediaHtml}</div>
     <div class="fanboard-card-body">
+      <div class="fanboard-card-tags" style="margin-bottom:6px">${typeBadge}</div>
       <div class="fanboard-card-comment">${escapeHtml(d.comment)}</div>
       <div class="fanboard-card-meta">
         <span class="fanboard-card-nick">♡ ${escapeHtml(d.nickname)}</span>
         <span class="fanboard-card-date">${date}</span>
       </div>
-      ${memberTags ? `<div class="fanboard-card-tags">${memberTags}</div>` : ""}
     </div>
   `;
   return card;
@@ -272,27 +382,21 @@ function escapeHtml(str) {
    Firebase未設定時のデモ表示
    ================================================ */
 function renderFanboardDemo() {
-  initMemberTagsDemo();
   const list = document.getElementById("fanboardList");
-  const countEl = document.getElementById("fbPostCount");
-  if (countEl) countEl.textContent = "";
   if (list)
     list.innerHTML = `
     <div class="fanboard-setup-notice">
       <div style="font-size:20px;margin-bottom:8px">🔧</div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px">Firebase設定が必要です</div>
       <div style="font-size:12px;color:var(--sub);line-height:1.8">
-        投稿機能を使うには <code>js/fanboard.js</code> の<br>
-        <code>firebaseConfig</code> を設定してください。<br><br>
-        <a href="https://console.firebase.google.com/" target="_blank" rel="noopener"
-          style="color:var(--pink);font-weight:700">Firebase Console →</a><br>
-        でプロジェクトを作成してAPIキーを取得してください。
+        <code>js/fanboard.js</code> の <code>firebaseConfig</code> を設定してください。
       </div>
-    </div>
-  `;
+    </div>`;
+  // フォームのデモ用メンバータグだけ表示
+  initMemberTagsStatic();
 }
 
-function initMemberTagsDemo() {
+function initMemberTagsStatic() {
   const wrap = document.getElementById("fbMemberTags");
   if (!wrap || !window.MEMBERS) return;
   wrap.innerHTML = "";
@@ -309,7 +413,23 @@ function initMemberTagsDemo() {
    DOMContentLoaded
    ================================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  // Firebase SDKを動的に読み込む
+  document.querySelectorAll(".fb-type-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      postType = btn.dataset.type;
+      document
+        .querySelectorAll(".fb-type-btn")
+        .forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const ms = document.getElementById("fbMemberSection");
+      if (ms) ms.style.display = postType === "member" ? "block" : "none";
+
+      // ← ここを追加：メンバー個人を選んだときにタグを初期化
+      if (postType === "member") {
+        initMemberTags();
+      }
+    });
+  });
+
   if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
     const scripts = [
       "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js",
@@ -326,6 +446,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } else {
     renderFanboardDemo();
-    initMemberTagsDemo();
   }
 });
